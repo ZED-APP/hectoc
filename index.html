@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hectoc Math Game</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+    }
+    h1 {
+      color: #2c3e50;
+    }
+    .numbers {
+      font-size: 24px;
+      margin: 10px 0;
+    }
+    input {
+      width: 90%;
+      max-width: 500px;
+      padding: 10px;
+      font-size: 18px;
+      margin: 10px 0;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #27ae60;
+    }
+    .error {
+      color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+  <h1>ZED Games</h1>
+<br></br>
+  <h1>Hectoc Math</h1>
+  <p class="numbers" id="numbers"></p>
+  <input type="text" id="expression" placeholder="اكتب العملية هنا...">
+  <button onclick="checkResult()">تحقق</button>
+  <div class="result" id="result"></div>
+
+  <script>
+    const allSets = [
+      [1,2,3,4,5,6],
+      [9,8,7,6,5,4],
+      [2,5,2,5,2,5],
+      [6,6,6,6,6,6],
+      [3,4,2,1,6,2],
+    ];
+
+    let numbers = allSets[Math.floor(Math.random() * allSets.length)];
+    document.getElementById("numbers").textContent = `الأرقام: ${numbers.join(' ')}`;
+
+    function checkResult() {
+      const expr = document.getElementById("expression").value;
+      const resDiv = document.getElementById("result");
+      const usedDigits = expr.replace(/[^0-9]/g, '');
+
+      // Check digit sequence
+      let ordered = true;
+      let digitsInNumbers = numbers.join('');
+      let index = 0;
+
+      for (let i = 0; i < usedDigits.length; i++) {
+        const pos = digitsInNumbers.indexOf(usedDigits[i], index);
+        if (pos === -1) {
+          ordered = false;
+          break;
+        }
+        index = pos + 1;
+      }
+
+      try {
+        const result = eval(expr);
+        if (!ordered) {
+          resDiv.innerHTML = '<span class="error">❌ يجب استخدام الأرقام بالترتيب.</span>';
+        } else if (result === 100) {
+          resDiv.innerHTML = '✅ صحيح! الناتج هو 100.';
+        } else {
+          resDiv.innerHTML = `<span class="error">❌ الناتج هو ${result} وليس 100.</span>`;
+        }
+      } catch (e) {
+        resDiv.innerHTML = '<span class="error">❌ هناك خطأ في العملية الحسابية.</span>';
+      }
+    }
+  </script>
+</body>
+</html>
