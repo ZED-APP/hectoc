@@ -32,7 +32,7 @@
       background-color: #2980b9;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 15px;
       cursor: pointer;
     }
     .result {
@@ -64,7 +64,7 @@
     ];
 
     let numbers = allSets[Math.floor(Math.random() * allSets.length)];
-    document.getElementById("numbers").textContent = `الأرقام: ${numbers.join(' ')}`;
+    document.getElementById("numbers").textContent = `الارقام من اليمين الى اليسار -->: ${numbers.join(' ')}`;
 
     function checkResult() {
       const expr = document.getElementById("expression").value;
