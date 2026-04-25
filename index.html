@@ -1,103 +1,183 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
-  <meta charset="UTF-8">
-  <title>Hectoc Math Game</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0f4f8;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 30px;
-    }
-    h1 {
-      color: #2c3e50;
-    }
-    .numbers {
-      font-size: 24px;
-      margin: 10px 0;
-    }
-    input {
-      width: 90%;
-      max-width: 500px;
-      padding: 10px;
-      font-size: 18px;
-      margin: 10px 0;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #2980b9;
-      color: white;
-      border: none;
-      border-radius: 15px;
-      cursor: pointer;
-    }
-    .result {
-      margin-top: 20px;
-      font-size: 20px;
-      color: #27ae60;
-    }
-    .error {
-      color: #c0392b;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Hectoc Math Game</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: radial-gradient(circle at top, #0f172a, #020617);
+  color: white;
+}
+
+.container {
+  text-align: center;
+}
+
+.title {
+  font-size: 42px;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+
+.subtitle {
+  font-size: 18px;
+  opacity: 0.8;
+  margin-bottom: 25px;
+}
+
+.card {
+  width: 380px;
+  padding: 25px;
+  border-radius: 20px;
+
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.15);
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.numbers {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #60a5fa;
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+
+  transition: 0.25s;
+}
+
+button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #22c55e, #3b82f6);
+}
+
+.result {
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.bad {
+  color: #ef4444;
+}
+
+.good {
+  color: #22c55e;
+}
+</style>
 </head>
+
 <body>
-  <h1>ZED Games</h1>
-<br></br>
-  <h1>Hectoc Math</h1>
-  <p class="numbers" id="numbers"></p>
-  <input type="text" id="expression" placeholder="اكتب العملية هنا...">
-  <button onclick="checkResult()">تحقق</button>
-  <div class="result" id="result"></div>
 
-  <script>
-    const allSets = [
-      [1,2,3,4,5,6],
-      [9,8,7,6,5,4],
-      [2,5,2,5,2,5],
-      [6,6,6,6,6,6],
-      [3,4,2,1,6,2],
-    ];
+<div class="container">
 
-    let numbers = allSets[Math.floor(Math.random() * allSets.length)];
-    document.getElementById("numbers").textContent = `الارقام من اليمين الى اليسار -->: ${numbers.join(' ')}`;
+  <h1 class="title">ZED Games</h1>
+  <h2 class="subtitle">🧠 Hectoc Math Challenge</h2>
 
-    function checkResult() {
-      const expr = document.getElementById("expression").value;
-      const resDiv = document.getElementById("result");
-      const usedDigits = expr.replace(/[^0-9]/g, '');
+  <div class="card">
 
-      // Check digit sequence
-      let ordered = true;
-      let digitsInNumbers = numbers.join('');
-      let index = 0;
+    <p class="numbers" id="numbers"></p>
 
-      for (let i = 0; i < usedDigits.length; i++) {
-        const pos = digitsInNumbers.indexOf(usedDigits[i], index);
-        if (pos === -1) {
-          ordered = false;
-          break;
-        }
-        index = pos + 1;
-      }
+    <input type="text" id="expression" placeholder="Enter expression...">
 
-      try {
-        const result = eval(expr);
-        if (!ordered) {
-          resDiv.innerHTML = '<span class="error">❌ يجب استخدام الأرقام بالترتيب.</span>';
-        } else if (result === 100) {
-          resDiv.innerHTML = '✅ صحيح! الناتج هو 100.';
-        } else {
-          resDiv.innerHTML = `<span class="error">❌ الناتج هو ${result} وليس 100.</span>`;
-        }
-      } catch (e) {
-        resDiv.innerHTML = '<span class="error">❌ هناك خطأ في العملية الحسابية.</span>';
-      }
+    <button onclick="checkResult()">Check Answer</button>
+
+    <div class="result" id="result"></div>
+
+  </div>
+
+</div>
+
+<script>
+const allSets = [
+  [1,2,3,4,5,6],
+  [9,8,7,6,5,4],
+  [2,5,2,5,2,5],
+  [6,6,6,6,6,6],
+  [3,4,2,1,6,2],
+];
+
+let numbers = allSets[Math.floor(Math.random() * allSets.length)];
+document.getElementById("numbers").textContent =
+"🔢 Numbers: " + numbers.join(' ');
+
+function checkResult() {
+  const expr = document.getElementById("expression").value;
+  const resDiv = document.getElementById("result");
+
+  const usedDigits = expr.replace(/[^0-9]/g, '');
+  let digitsInNumbers = numbers.join('');
+  let index = 0;
+  let ordered = true;
+
+  for (let i = 0; i < usedDigits.length; i++) {
+    const pos = digitsInNumbers.indexOf(usedDigits[i], index);
+    if (pos === -1) {
+      ordered = false;
+      break;
     }
-  </script>
+    index = pos + 1;
+  }
+
+  try {
+    const result = eval(expr);
+
+    if (!ordered) {
+      resDiv.textContent = "❌ Must use numbers in order!";
+      resDiv.className = "result bad";
+    }
+    else if (result === 100) {
+      resDiv.textContent = "🎉 Correct! You made 100!";
+      resDiv.className = "result good";
+    }
+    else {
+      resDiv.textContent = "❌ Result = " + result + " (not 100)";
+      resDiv.className = "result bad";
+    }
+
+  } catch (e) {
+    resDiv.textContent = "❌ Invalid expression!";
+    resDiv.className = "result bad";
+  }
+}
+</script>
+
 </body>
 </html>
